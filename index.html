@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UfaqTech Social Hub - Discover and Share Curated Links</title>
+
+    <!-- SEO & Social Meta Tags -->
+    <meta name="description" content="A curated directory for sharing and discovering community links across various platforms and categories.">
+    <meta name="keywords" content="links, community, social media, groups, directory, marketing, business, gaming, technology">
+
+    <!-- OpenGraph Meta Tags for Facebook/LinkedIn -->
+    <meta property="og:title" content="UfaqTech Social Hub - Discover and Share Curated Links">
+    <meta property="og:description" content="A curated directory for sharing and discovering community links across various platforms and categories.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ufaqtech.github.io/UT-SocialHub">
+    <meta property="og:image" content="https://placehold.co/1200x630/232426/fff?text=UfaqTech+Social+Hub">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="UfaqTech Social Hub - Discover and Share Curated Links">
+    <meta name="twitter:description" content="A curated directory for sharing and discovering community links across various platforms and categories.">
+    <meta name="twitter:image" content="https://placehold.co/800x418/232426/fff?text=UfaqTech+Social+Hub">
+
+    <!-- CDN Links -->
+    <link href="vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="vendors/themify-icons/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    </head>
+
+<body>
+
+   
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Custom Alert Modal -->
+    <div class="modal fade" id="customAlertModal" tabindex="-1" aria-labelledby="customAlertModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content rounded-4 shadow">
+                <div class="modal-body text-center py-4">
+                    <p id="alertMessage"></p>
+                    <button type="button" class="btn btn-primary rounded-pill w-100 mt-2" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Player Modal -->
+    <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-4 shadow">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title" id="videoModalLabel">Video Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-0">
+                    <div class="ratio ratio-16x9">
+                        <iframe id="videoIframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content rounded-4 shadow">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title" id="shareModalLabel">Share Link</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center d-flex flex-column align-items-center">
+                    <p class="text-muted" id="shareTitle"></p>
+                    <div class="d-flex flex-wrap justify-content-center gap-3 mt-2">
+                        <a href="#" class="btn-link text-decoration-none share-option" id="share-facebook">
+                            <i class="fab fa-facebook-square share-option-icon" style="color:#1877F2;"></i>
+                            <div class="share-option-text">Facebook</div>
+                        </a>
+                        <a href="#" class="btn-link text-decoration-none share-option" id="share-twitter">
+                            <i class="fab fa-x-twitter share-option-icon" style="color:#000;"></i>
+                            <div class="share-option-text">Twitter</div>
+                        </a>
+                        <a href="#" class="btn-link text-decoration-none share-option" id="share-whatsapp">
+                            <i class="fab fa-whatsapp-square share-option-icon" style="color:#25D366;"></i>
+                            <div class="share-option-text">WhatsApp</div>
+                        </a>
+                        <a href="#" class="btn-link text-decoration-none share-option" id="share-telegram">
+                            <i class="fab fa-telegram share-option-icon" style="color:#0088CC;"></i>
+                            <div class="share-option-text">Telegram</div>
+                        </a>
+                        <button class="btn btn-link text-decoration-none share-option" id="copy-link">
+                            <i class="fas fa-copy share-option-icon" style="color:#6c757d;"></i>
+                            <div class="share-option-text">Copy Link</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="container-fluid sticky-top  shadow-sm animate__animated animate__fadeInDown">
+        <div class=" d-flex justify-content-between align-items-center py-3 main-content-container">
+            
+                <img src="assets/imges/UT_social-hub.png" alt="UfaqTech Logo" class="navbar-logo-img">
+            
+            <div class="navbar-icons d-flex gap-3">
+                <a class="nav-link text-center d-flex flex-column align-items-center" href="#" id="mode-toggle">
+                    <i class="fas fa-moon fs-5" id="mode-icon"></i>
+                    <small>Mode</small>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section with 3D animation -->
+    <header class="hero-section text-white animate__animated animate__fadeIn">
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-content">
+            <h1 class="hero-title animate__animated animate__zoomIn">
+                Discover an Ocean of Links
+            </h1>
+            <p class="lead animate__animated animate__fadeInUp animate__delay-1s">
+                Find and share curated links for every interest.
+            </p>
+            
+            <!-- Search and "Submit Link" button -->
+            <div class="hero-search-container d-flex flex-column flex-md-row justify-content-center align-items-center gap-3 animate__animated animate__fadeInUp">
+                <div class="position-relative flex-grow-1 w-100">
+                    <input class="form-control rounded-pill" type="search" placeholder="Search links, platforms, or categories..." aria-label="Search" id="searchInput">
+                    <i class="fas fa-times-circle search-clear" id="searchClearBtn"></i>
+                </div>
+                <a href="https://forms.gle/5FzQHpHXSyMsNVyZ9" target="_blank" class="btn btn-primary rounded-pill text-nowrap w-100 w-md-auto">
+                    Submit Link
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Platforms and Categories Grid Section -->
+    <section class="container filter-grids-section main-content-container">
+          <div class="statement-p">
+            Catagories By
+            <div class="pt-forms">
+            <span class="fab fa-whatsapp "> WhatsApp</span>
+            <span class="fab fa-telegram"> Telogram</span>
+            <span class="fab fa-facebook"> Facebook</span>
+            <span class="fab fa-instagram"> Instagram</span>
+            <span class="fab fa-linkedin"> LinkedIn</span>
+            <span class="fab fa-youtube"> Youtube</span>
+            
+            </div>
+        </div>
+        <div id="platforms-grid" class="filter-grid-container mb-4">
+            <!-- Platform icons will be rendered here -->
+        </div>
+
+          <div class="statement">
+            Filter By
+            <div class="ft-forms">
+            <span class="fas fa-globe"> All</span>
+            <span class="fas fa-briefcase"> Business</span>
+            <span class="fas fa-graduation-cap"> Education</span>
+            <span class="fas fa-film"> Entertainment</span>
+            <Span class="fas fa-paint-brush"> Art</Span>
+            <span class="fas fa-laugh-squint"> mems</span>
+            </div>
+        </div>
+        <div id="categories-grid" class="filter-grid-container mb-4">
+            <!-- Category icons will be rendered here -->
+        </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <main class="container main-content-container py-5 border-top">
+        <section class="mb-5 ">
+            <h2 class="section-title text-center animate__animated animate__fadeInUp">Trending Links</h2>
+            <div id="trending-links-container" class="trending-banner d-flex gap-4 p-3 animate__animated animate__fadeInUp  mt-5 border-top">
+                <!-- Trending links will be rendered here -->
+            </div>
+        </section>
+
+        <section class="mb-5 ">
+            <h2 class="section-title text-center animate__animated animate__fadeInUp">All Links</h2>
+            <div id="links-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-5 border-top">
+                <!-- Links will be rendered here -->
+            </div>
+        </section>
+
+        <!-- No results message -->
+        <div id="no-results-message" class="text-center py-5 d-none">
+            <h3>No results found.</h3>
+            <p>Try adjusting your search or filters.</p>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div id="pagination-controls" class="pagination-controls d-flex justify-content-center align-items-center  mt-4">
+            <button id="prevBtn" class="btn btn-secondary rounded-pill">
+                <i class="fas fa-chevron-left me-2"></i>Previous
+            </button>
+            <span id="pageInfo" class="page-info"></span>
+            <button id="nextBtn" class="btn btn-secondary rounded-pill">Next
+                <i class="fas fa-chevron-right ms-2"></i>
+            </button>
+            <div class="input-group ms-3" style="width: 150px;">
+                <span class="input-group-text rounded-start-pill">Go to</span>
+                <input type="number" class="form-control text-center pagination-input rounded-end-pill" id="pageJumpInput" min="1">
+            </div>
+        </div>
+    </main>
+    
+    <!-- Floating "Submit Link" button -->
+    <a href="https://forms.gle/5FzQHpHXSyMsNVyZ9" target="_blank" class="floating-btn text-decoration-none">
+        <i class="fas fa-plus me-2"></i> Submit Link
+    </a>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-muted border-top mt-5">
+        <p>&copy; 2025 UfaqTech Social Hub. All rights reserved.</p>
+       
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="vendors/bootstrap/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>
