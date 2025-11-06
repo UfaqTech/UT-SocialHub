@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ufaqtech.github.io/UT-SocialHub/sitemap.xml
